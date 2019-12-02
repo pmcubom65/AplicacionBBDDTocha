@@ -1,0 +1,320 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang3082{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\colortbl ;\red0\green0\blue255;}
+{\*\generator Riched20 6.3.9600}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang10 -- phpMyAdmin SQL Dump\par
+-- version 5.0.0-rc1\par
+-- {{\field{\*\fldinst{HYPERLINK https://www.phpmyadmin.net/ }}{\fldrslt{https://www.phpmyadmin.net/\ul0\cf0}}}}\f0\fs22\par
+--\par
+-- Servidor: 127.0.0.1:3306\par
+-- Tiempo de generaci\'f3n: 02-12-2019 a las 17:32:51\par
+-- Versi\'f3n del servidor: 8.0.18\par
+-- Versi\'f3n de PHP: 7.2.24-0ubuntu0.18.04.1\par
+\par
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";\par
+SET AUTOCOMMIT = 0;\par
+START TRANSACTION;\par
+SET time_zone = "+00:00";\par
+\par
+\par
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;\par
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;\par
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;\par
+/*!40101 SET NAMES utf8mb4 */;\par
+\par
+--\par
+-- Base de datos: `gestion_festival`\par
+--\par
+\par
+-- --------------------------------------------------------\par
+\par
+--\par
+-- Estructura de tabla para la tabla `t_event`\par
+--\par
+\par
+CREATE TABLE `t_event` (\par
+  `id_events` int(3) UNSIGNED NOT NULL,\par
+  `id_users_events` int(3) UNSIGNED NOT NULL,\par
+  `date_events` varchar(12) COLLATE latin1_general_ci NOT NULL,\par
+  `place_events` varchar(40) COLLATE latin1_general_ci NOT NULL,\par
+  `name_events` varchar(20) COLLATE latin1_general_ci NOT NULL,\par
+  `price` float UNSIGNED NOT NULL\par
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;\par
+\par
+--\par
+-- Volcado de datos para la tabla `t_event`\par
+--\par
+\par
+INSERT INTO `t_event` (`id_events`, `id_users_events`, `date_events`, `place_events`, `name_events`, `price`) VALUES\par
+(1, 1, '2020-07-23', 'Madrid', 'Rock in Rio', 30),\par
+(2, 2, '2019-04-14', 'Da\rquote anshan', 'Brassicaceae', 40.9),\par
+(3, 3, '2019-09-28', 'Benn\'e4s', 'Orthotrichaceae', 66),\par
+(4, 4, '2019-11-19', 'Anta', 'Ophioglossaceae', 72.1);\par
+\par
+-- --------------------------------------------------------\par
+\par
+--\par
+-- Estructura de tabla para la tabla `t_events_favorites`\par
+--\par
+\par
+CREATE TABLE `t_events_favorites` (\par
+  `id_ev_fav` int(3) UNSIGNED NOT NULL,\par
+  `id_user_ev_fav` int(3) UNSIGNED NOT NULL,\par
+  `id_ev` int(3) UNSIGNED NOT NULL\par
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;\par
+\par
+--\par
+-- Volcado de datos para la tabla `t_events_favorites`\par
+--\par
+\par
+INSERT INTO `t_events_favorites` (`id_ev_fav`, `id_user_ev_fav`, `id_ev`) VALUES\par
+(1, 1, 1),\par
+(3, 2, 1),\par
+(2, 2, 4),\par
+(4, 3, 4);\par
+\par
+-- --------------------------------------------------------\par
+\par
+--\par
+-- Estructura de tabla para la tabla `t_events_groups`\par
+--\par
+\par
+CREATE TABLE `t_events_groups` (\par
+  `id_ev_group` int(11) NOT NULL,\par
+  `id_group` int(3) UNSIGNED NOT NULL,\par
+  `id_event` int(3) UNSIGNED NOT NULL,\par
+  `hour_ev_group` varchar(20) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL\par
+)ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;\par
+\par
+-- --------------------------------------------------------\par
+\par
+--\par
+-- Estructura de tabla para la tabla `t_group`\par
+--\par
+\par
+CREATE TABLE `t_group` (\par
+  `id_group` int(3) UNSIGNED NOT NULL,\par
+  `name_group` varchar(40) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,\par
+  `logo_group` varchar(200) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,\par
+  `obs_group` varchar(200) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL\par
+)ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;;\par
+\par
+--\par
+-- Volcado de datos para la tabla `t_group`\par
+--\par
+\par
+INSERT INTO `t_group` (`id_group`, `name_group`, `logo_group`, `obs_group`) VALUES\par
+(8, 'Kiss', '/images/kiss.jpg', 'M\'fasica Rock and Roll'),\par
+(10, 'Marea', '/images/marea2.jpg', 'Grupo de m\'fasica Espa\'f1ol.\\nM\'fasica Rock'),\par
+(11, 'Estopa', '/images/Estopa.jpg', 'Grupo Espa\'f1ol.\\nJos\'e9 Manuel y David Mu\'f1oz'),\par
+(15, 'fzsfsdfgdf', '/images/marea.jpg', 'sdfhgfhdg');\par
+\par
+-- --------------------------------------------------------\par
+\par
+--\par
+-- Estructura de tabla para la tabla `t_purchase_ev`\par
+--\par
+\par
+CREATE TABLE `t_purchase_ev` (\par
+  `id_purchase_ev` bigint(20) UNSIGNED NOT NULL,\par
+  `id_event_purchase_ev` int(11) NOT NULL,\par
+  `name_purchase_ev` text COLLATE latin1_general_ci NOT NULL,\par
+  `email_purchase_ev` text COLLATE latin1_general_ci NOT NULL,\par
+  `pay_purchase_ev` text COLLATE latin1_general_ci NOT NULL,\par
+  `address_purchase_ev` text COLLATE latin1_general_ci NOT NULL,\par
+  `cp_purchase_ev` int(5) NOT NULL,\par
+  `nif_purchase_ev` text CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL\par
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci COMMENT='Tabla de compras de entradas a eventos';\par
+\par
+--\par
+-- Volcado de datos para la tabla `t_purchase_ev`\par
+--\par
+\par
+INSERT INTO `t_purchase_ev` (`id_purchase_ev`, `id_event_purchase_ev`, `name_purchase_ev`, `email_purchase_ev`, `pay_purchase_ev`, `address_purchase_ev`, `cp_purchase_ev`, `nif_purchase_ev`) VALUES\par
+(1, 1, 'Paco', 'cliente1@gmai.com', 'Paypal', 'Calle pinocho,8', 28040, '45693256L'),\par
+(2, 2, 'Pedro', 'cliente2@gmail.com', 'paypal', 'calle menor 14', 25040, '12457896B');\par
+\par
+-- --------------------------------------------------------\par
+\par
+--\par
+-- Estructura de tabla para la tabla `t_types_users`\par
+--\par
+\par
+CREATE TABLE `t_types_users` (\par
+  `id_types_user` int(3) UNSIGNED NOT NULL,\par
+  `types` varchar(20) NOT NULL\par
+)ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;;\par
+\par
+--\par
+-- Volcado de datos para la tabla `t_types_users`\par
+--\par
+\par
+INSERT INTO `t_types_users` (`id_types_user`, `types`) VALUES\par
+(1, 'Administrador'),\par
+(2, 'Normal');\par
+\par
+-- --------------------------------------------------------\par
+\par
+--\par
+-- Estructura de tabla para la tabla `t_users`\par
+--\par
+\par
+CREATE TABLE `t_users` (\par
+  `id_user` int(3) UNSIGNED NOT NULL,\par
+  `nick_user` varchar(15) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,\par
+  `pass_user` varchar(30) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,\par
+  `cod_types_user` int(3) UNSIGNED NOT NULL,\par
+  `nombre_user` varchar(10) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,\par
+  `apellidos_user` varchar(20) COLLATE latin1_general_ci NOT NULL,\par
+  `nif_user` char(9) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL\par
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;\par
+\par
+--\par
+-- Volcado de datos para la tabla `t_users`\par
+--\par
+\par
+INSERT INTO `t_users` (`id_user`, `nick_user`, `pass_user`, `cod_types_user`, `nombre_user`, `apellidos_user`, `nif_user`) VALUES\par
+(1, '123456', '123456', 1, 'pepe', 'gonzalez', '123456'),\par
+(2, 'david', 'david', 2, 'david', 'david', '12345678L'),\par
+(3, 'mari', 'mari', 2, 'mari', 'mari', '12345678F'),\par
+(4, 'ASD', 'ASD', 2, 'ASD', 'ASD', '12345678D'),\par
+(6, 'zx', 'zx', 2, 'zx', 'zx', 'zx');\par
+\par
+--\par
+-- \'cdndices para tablas volcadas\par
+--\par
+\par
+--\par
+-- Indices de la tabla `t_event`\par
+--\par
+ALTER TABLE `t_event`\par
+  ADD PRIMARY KEY (`id_events`),\par
+  ADD KEY `FK_USERS` (`id_users_events`);\par
+\par
+--\par
+-- Indices de la tabla `t_events_favorites`\par
+--\par
+ALTER TABLE `t_events_favorites`\par
+  ADD PRIMARY KEY (`id_ev_fav`),\par
+  ADD KEY `id_user_ev_fav` (`id_user_ev_fav`,`id_ev`),\par
+  ADD KEY `eventoFavorito` (`id_ev`);\par
+\par
+--\par
+-- Indices de la tabla `t_events_groups`\par
+--\par
+ALTER TABLE `t_events_groups`\par
+  ADD PRIMARY KEY (`id_ev_group`),\par
+  ADD KEY `FK_t_group` (`id_group`),\par
+  ADD KEY `FK_t_event` (`id_event`);\par
+\par
+--\par
+-- Indices de la tabla `t_group`\par
+--\par
+ALTER TABLE `t_group`\par
+  ADD PRIMARY KEY (`id_group`),\par
+  ADD UNIQUE KEY `name_group` (`name_group`);\par
+\par
+--\par
+-- Indices de la tabla `t_purchase_ev`\par
+--\par
+ALTER TABLE `t_purchase_ev`\par
+  ADD PRIMARY KEY (`id_purchase_ev`),\par
+  ADD UNIQUE KEY `id_purchase` (`id_purchase_ev`);\par
+\par
+--\par
+-- Indices de la tabla `t_types_users`\par
+--\par
+ALTER TABLE `t_types_users`\par
+  ADD PRIMARY KEY (`id_types_user`);\par
+\par
+--\par
+-- Indices de la tabla `t_users`\par
+--\par
+ALTER TABLE `t_users`\par
+  ADD PRIMARY KEY (`id_user`),\par
+  ADD UNIQUE KEY `nick_user` (`nick_user`),\par
+  ADD UNIQUE KEY `uniq` (`nif_user`),\par
+  ADD KEY `cod_types_user` (`cod_types_user`);\par
+\par
+--\par
+-- AUTO_INCREMENT de las tablas volcadas\par
+--\par
+\par
+--\par
+-- AUTO_INCREMENT de la tabla `t_event`\par
+--\par
+ALTER TABLE `t_event`\par
+  MODIFY `id_events` int(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;\par
+\par
+--\par
+-- AUTO_INCREMENT de la tabla `t_events_favorites`\par
+--\par
+ALTER TABLE `t_events_favorites`\par
+  MODIFY `id_ev_fav` int(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;\par
+\par
+--\par
+-- AUTO_INCREMENT de la tabla `t_events_groups`\par
+--\par
+ALTER TABLE `t_events_groups`\par
+  MODIFY `id_ev_group` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;\par
+\par
+--\par
+-- AUTO_INCREMENT de la tabla `t_group`\par
+--\par
+ALTER TABLE `t_group`\par
+  MODIFY `id_group` int(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;\par
+\par
+--\par
+-- AUTO_INCREMENT de la tabla `t_purchase_ev`\par
+--\par
+ALTER TABLE `t_purchase_ev`\par
+  MODIFY `id_purchase_ev` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;\par
+\par
+--\par
+-- AUTO_INCREMENT de la tabla `t_types_users`\par
+--\par
+ALTER TABLE `t_types_users`\par
+  MODIFY `id_types_user` int(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;\par
+\par
+--\par
+-- AUTO_INCREMENT de la tabla `t_users`\par
+--\par
+ALTER TABLE `t_users`\par
+  MODIFY `id_user` int(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;\par
+\par
+--\par
+-- Restricciones para tablas volcadas\par
+--\par
+\par
+--\par
+-- Filtros para la tabla `t_event`\par
+--\par
+ALTER TABLE `t_event`\par
+  ADD CONSTRAINT `FK_USERS` FOREIGN KEY (`id_users_events`) REFERENCES `t_users` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE;\par
+\par
+--\par
+-- Filtros para la tabla `t_events_favorites`\par
+--\par
+ALTER TABLE `t_events_favorites`\par
+  ADD CONSTRAINT `eventoFavorito` FOREIGN KEY (`id_ev`) REFERENCES `t_event` (`id_events`) ON DELETE RESTRICT ON UPDATE RESTRICT,\par
+  ADD CONSTRAINT `usuarioFavorito` FOREIGN KEY (`id_user_ev_fav`) REFERENCES `t_users` (`id_user`) ON DELETE RESTRICT ON UPDATE RESTRICT;\par
+\par
+--\par
+-- Filtros para la tabla `t_events_groups`\par
+--\par
+ALTER TABLE `t_events_groups`\par
+  ADD CONSTRAINT `FK_t_event` FOREIGN KEY (`id_event`) REFERENCES `t_event` (`id_events`) ON DELETE CASCADE ON UPDATE CASCADE,\par
+  ADD CONSTRAINT `FK_t_group` FOREIGN KEY (`id_group`) REFERENCES `t_group` (`id_group`) ON DELETE CASCADE ON UPDATE CASCADE;\par
+\par
+--\par
+-- Filtros para la tabla `t_users`\par
+--\par
+ALTER TABLE `t_users`\par
+  ADD CONSTRAINT `type` FOREIGN KEY (`cod_types_user`) REFERENCES `t_types_users` (`id_types_user`) ON DELETE CASCADE ON UPDATE CASCADE;\par
+COMMIT;\par
+\par
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;\par
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;\par
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;\par
+\par
+}
+ 
