@@ -29,10 +29,7 @@ import net.sf.jasperreports.engine.scriptlets.ScriptletFactoryContext;
 public class GenerarInformeFavoritos {
      public void mostrarInforme() {
          
-         if (variableGlobal.id_active!=0) {
-             
-         }
-         
+       
          
          
          
@@ -47,35 +44,31 @@ public class GenerarInformeFavoritos {
 //Acceso a la base de datos
                 Conexion conectabd=new Conexion();
        //     ModeloAccesoDatos conectabd = new ModeloAccesoDatos();
+       
+       
             Connection conectado = conectabd.obtenerConexion();
-            String sql = "SELECT * FROM t_events_favorites";
+            String sql = "SELECT distinct tef.id_ev, tef.id_ev_fav, tef.id_user_ev_fav, te.date_events, te.name_events, te.place_events FROM t_events_favorites tef, t_event te where tef.id_ev=te.id_events and tef.id_user_ev_fav="+variableGlobal.id_active;
             Statement stm = conectado.createStatement();
             ResultSet rs = stm.executeQuery(sql);
-//Se llena el array de map con los valores de la tabla de alumnos de la base de datos.
+
             while (rs.next()) {
                 map = new HashMap();
-//Codigo, Nombre, etc son los campos que se han definido en el informe
-//Se canjearán por datos que se extraen con rs.getString(1) siendo el valor del campo Codigo
+
               
                 map.put("id_ev", rs.getString(1));
-
                 map.put("id_ev_fav", rs.getString(2));
                 map.put("id_user_ev_fav", rs.getString(3));
-       /*         map.put("Nombre", rs.getString(3));
-                map.put("Apellido", rs.getString(4));
-                map.put("DNI", rs.getString(5));
-                map.put("Direccion", rs.getString(6));
-                map.put("moduloalumnonota", rs.getString(7));
-                map.put("notaalumno", rs.getString(9));
-                map.put("evaluacionalumnonota", rs.getString(8));*/
+                map.put("date_events", rs.getString(4));
+                map.put("name_events", rs.getString(5));
+                 map.put("place_events", rs.getString(6));
+
                 
                 list.add(map); //se añade al map a la lista de map.
             }
             conectabd.desconectar(conectado); //Desconecta la conexión actual a la BBDD.
 //Se convierte la lista de datos al formato que acepta Jasper.
             JRBeanCollectionDataSource fuenteDeDatos = new JRBeanCollectionDataSource(list);
-//Se crea un objeto Jasper de impresión, buscando el archivo donde inyectar los datos, el formato
-//del map es decir de la estructura de datos y el conjunto de datos obtenidos a visualizar.
+
 
             JasperPrint print
                     = JasperFillManager.fillReport(GenerarInformeFavoritos.class.getResourceAsStream("/informes/inf_evento_favorito.jasper"),

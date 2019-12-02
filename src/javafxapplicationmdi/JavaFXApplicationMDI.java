@@ -22,7 +22,7 @@ public class JavaFXApplicationMDI extends Application {
     MDIWindow mDIWindow;
     AnchorPane root;
     MDICanvas canvas;
-    
+    variableGlobal mivariable;
     @Override
     public void start(Stage stage) throws Exception {
         canvas=new MDICanvas();
@@ -79,8 +79,8 @@ public class JavaFXApplicationMDI extends Application {
     {
         try {
             
-            new variableGlobal(3);
-            
+     
+            variableGlobal.id_active=2;
             root = FXMLLoader.load(getClass().getResource("/vista/"+formulariofxml));
             mDIWindow=new MDIWindow("myId"+i,new ImageView(url),nombre,root);
             canvas.addMDIWindow(mDIWindow);

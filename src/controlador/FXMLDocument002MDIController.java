@@ -15,8 +15,9 @@ import javafx.stage.Stage;
 
 public class FXMLDocument002MDIController implements Initializable {
     
+   
     
-        @FXML
+    @FXML
     private Button button;
     
     
@@ -38,11 +39,13 @@ public class FXMLDocument002MDIController implements Initializable {
             } catch (Exception e) {
 
             }*/
-            Scene nuevaescena = new Scene(nuevoparent, 800, 800);
+    
+           
+            Scene nuevaescena = new Scene(nuevoparent, 600, 800);
 
             FXMLPantallaFavoritosController micontrolador = loader.getController();
 
-          //  micontrolador.iniciarVentana(c);
+          
 
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
@@ -60,5 +63,7 @@ public class FXMLDocument002MDIController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+ 
     
 }

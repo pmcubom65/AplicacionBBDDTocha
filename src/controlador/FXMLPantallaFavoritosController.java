@@ -14,11 +14,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import javafxapplicationmdi.JavaFXApplicationMDI;
 import javax.swing.JOptionPane;
 import modelo.CEventos;
 import modelo.Conexion;
@@ -31,26 +38,55 @@ import modelo.GenerarInformeFavoritos;
  */
 public class FXMLPantallaFavoritosController implements Initializable {
 
+        @FXML
+    private Label minombre;
+    
     
     @FXML
     private TableView<CEventos> tablafavoritos;
     
     @FXML
     private Button favoritos;
+    
+    
+       @FXML
+    private Label error;
+    
+        @FXML
+    private Button atras;
 
     @FXML
     void crearInforme(ActionEvent event) {
+        
       if( variableGlobal.id_active==0) {
           favoritos.setDisable(true);
+          tablafavoritos.setDisable(true);
+          minombre.setText("");
+          error.setDisable(false);
+          error.setText("Tiene que loguearse para mostrar este contenico");
       }else {
+          error.setDisable(true);
           favoritos.setDisable(false);
+          tablafavoritos.setDisable(false);
         GenerarInformeFavoritos gif=new GenerarInformeFavoritos();
         gif.mostrarInforme();
       }
     }
        @Override
     public void initialize(URL url, ResourceBundle rb) {
-       
+             if( variableGlobal.id_active==0) {
+          favoritos.setDisable(true);
+          tablafavoritos.setDisable(true);
+          minombre.setText("");
+          error.setVisible(true);
+    //      error.setText("Tiene que loguearse para mostrar este contenido");
+      }else {
+          error.setVisible(false);
+          favoritos.setDisable(false);
+          tablafavoritos.setDisable(false);
+        GenerarInformeFavoritos gif=new GenerarInformeFavoritos();
+        gif.mostrarInforme();
+      
 
         TableColumn<CEventos, String> id_ev = new TableColumn<>("id_ev");
         id_ev.setCellValueFactory(new PropertyValueFactory<CEventos, String>("id_ev"));
@@ -78,6 +114,7 @@ public class FXMLPantallaFavoritosController implements Initializable {
        tablafavoritos.getColumns().addAll(id_ev, id_ev_fav,  id_user_ev_fav, date_events, name_events, place_events);
        
        cargarTabla();
+             }
     }  
     
     
@@ -98,9 +135,15 @@ public class FXMLPantallaFavoritosController implements Initializable {
             Conexion conectabd = new Conexion();
 
             Connection conectado = conectabd.obtenerConexion();
-            String sql = "SELECT id_ev, id_ev_fav, id_user_ev_fav, date_events, name_events, place_events FROM \n" +
-"t_events_favorites tef, t_event te where tef.id_ev=te.id_events";
-            Statement stm = conectado.createStatement();
+         //   String sql = "SELECT distinct tef.id_ev, tef.id_ev_fav, tef.id_user_ev_fav, te.date_events, te.name_events, te.place_events FROM t_events_favorites tef, t_event te where tef.id_ev=te.id_events and tef.id_user_ev_fav="+variableGlobal.id_active;
+           
+         String sql="SELECT distinct tef.id_ev, tef.id_ev_fav, tef.id_user_ev_fav, te.date_events, te.name_events, te.place_events,\n" +
+"CONCAT(tu.nombre_user,\" \", tu.apellidos_user) AS Nombre\n" +
+"FROM t_events_favorites tef, t_event te,\n" +
+"t_users tu where tef.id_ev=te.id_events and te.id_users_events=tu.id_user  and tef.id_user_ev_fav="+variableGlobal.id_active;
+         
+         
+         Statement stm = conectado.createStatement();
             ResultSet rs = stm.executeQuery(sql);
             //Se borran los datos de la TableView        
             tablafavoritos.getItems().clear();
@@ -111,9 +154,8 @@ public class FXMLPantallaFavoritosController implements Initializable {
                 String date_events = rs.getString(4);
                 String name_events = rs.getString(5);
                 String place_events = rs.getString(6);
-          /*      String dniA = rs.getString(4);
-                String direccionA = rs.getString(5);
-                //Añade cada registro a la TableView   */
+                String nombre = rs.getString(7);
+                minombre.setText(nombre);
                 tablafavoritos.getItems().addAll(new CEventos(id_ev, id_ev_fav, id_user_ev_fav,date_events,name_events,place_events));
             }                     //Visualizar la TableView.     
             tablafavoritos.setVisible(true);
@@ -127,7 +169,28 @@ public class FXMLPantallaFavoritosController implements Initializable {
     
     
     
+        @FXML
+    void volverAtras(ActionEvent event) {
     
+       FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/vista/FXMLDocument002MDI.fxml"));
+        Parent nuevoparent = null;
+        try {
+            nuevoparent = loader.load();
+        } catch (Exception e) {
+
+        }
+        
+        Scene nuevaescena = new Scene(nuevoparent, 800, 800);
+
+        //        VentanaDeDetallesController micontrolador = loader.getController();
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        window.setScene(nuevaescena);
+
+        window.show();
+
+    }
     
     
     
